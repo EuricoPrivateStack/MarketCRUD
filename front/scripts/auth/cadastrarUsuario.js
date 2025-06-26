@@ -17,7 +17,7 @@ cadastrar.addEventListener("submit", async (event) => {
     };
 
     try {
-        const resposta = await fetch("http://localhost:8080/auth/register", {
+        const resposta = await fetch(`${API_URL}/auth/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

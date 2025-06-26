@@ -10,24 +10,24 @@
   <a href="/index.html">
     <img src="/assets/logo_branca.png" alt="Logo">
   </a>
-  <button class="button_logout">Logout</button>
+  <button type="button" id="logout" class="button_logout">Logout</button>
 </header>
 
 <div class="view">
   <div class="search_add">
-    <div class="search-container">
+    <div class="search_container">
       <img class="lupa" src="/assets/lupa.png" alt="Lupa">
       <input type="text" id="mercadoria" name="mercadoria" placeholder="Mercadoria">
     </div>
     <button id="add">+</button>
   </div>
   <div class="table_content">
-
+    <ul id="mercadorias"></ul>
   </div>
 </div>
 
-
-
+<script src="/scripts/config.js"></script>
+<script src="/scripts/auth/logout.js"></script>
 <script src="/scripts/home.js"></script>
 </body>
 </html>
