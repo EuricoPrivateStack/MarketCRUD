@@ -1,6 +1,10 @@
+html {
+    font-size: 12px;
+}
+
 body {
     font-family: Arial, sans-serif;
-    font-size: 12px;
+    font-size: 1rem;
     background-color: #e2e2e2;
     display: flex;
     flex-direction: column;
@@ -10,34 +14,34 @@ body {
 }
 
 img {
-    width: 200px;
+    width: 16rem;
 }
 
 form {
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    min-width: 300px;
+    gap: 0.6rem;
+    width: 24rem;
 }
 
 input[type="text"],
 input[type="password"] {
-    font-size: 12px;
-    padding: 10px;
+    padding: 0.7rem;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 button {
-    padding: 10px;
+    margin-top: 1rem;
+    padding: 0.8rem;
     background-color: #038515;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 0.4rem;
     cursor: pointer;
 }
 

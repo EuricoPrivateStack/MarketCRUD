@@ -2,11 +2,12 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.8">
   <title>Home</title>
   <link rel="stylesheet" href="/styles/home.css">
 </head>
 <body>
-<header class="cabecalho">
+<header>
   <a href="/index.html">
     <img src="/assets/logo_branca.png" alt="Logo">
   </a>
@@ -17,14 +18,35 @@
   <div class="search_add">
     <div class="search_container">
       <img class="lupa" src="/assets/lupa.png" alt="Lupa">
-      <input type="text" id="mercadoria" name="mercadoria" placeholder="Mercadoria">
+      <input type="text" id="filtro" name="filtro" placeholder="Mercadoria">
     </div>
     <button id="add">+</button>
+  </div>
+  <div class="content-header">
+    <span class="nome">Nome</span>
+    <span class="valor">Valor</span>
   </div>
   <div class="table_content">
     <ul id="mercadorias"></ul>
   </div>
 </div>
+
+<footer>
+  <span>All Rights Reserved</span>
+  <span>Eurico Gabriel Vasconcelos Pereira</span>
+  <span>2025</span>
+  <div class="img-footer">
+    <a href="https://github.com/Eurico149">
+      <img src="../assets/github.png" alt="Github">
+    </a>
+    <a href="https://www.linkedin.com/in/euricogvp/">
+      <img src="../assets/linkedin.png" alt="Linkedin">
+    </a>
+    <a href="https://www.instagram.com/eurico_gabriel149/">
+      <img src="../assets/instagram.png" alt="Instagram">
+    </a>
+  </div>
+</footer>
 
 <script src="/scripts/config.js"></script>
 <script src="/scripts/auth/logout.js"></script>

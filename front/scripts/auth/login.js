@@ -13,6 +13,8 @@ login.addEventListener("submit", async (event) => {
         password: password
     };
 
+    console.log(dados);
+
     try {
         const resposta = await fetch(`${API_URL}/auth/login`, {
             method: "POST",
@@ -29,6 +31,4 @@ login.addEventListener("submit", async (event) => {
         console.log(error);
         alert("Ocorreu um erro ao tentar se conectar ao servidor. Tente novamente mais tarde.");
     }
-
-
 });
