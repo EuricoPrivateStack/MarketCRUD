@@ -2,48 +2,8 @@ let mercadorias = [];
 
 window.addEventListener("pageshow", async () => {
     try {
-        // const resposta = await fetch(`${API_URL}/merch`, {
-        //     method: "GET",
-        //     credentials: "include"
-        // });
-        //
-        // if (resposta.status !== 200) {
-        //     alert("Acesso não autorizado!");
-        //     window.location.href = "../pages/login.html";
-        //     return;
-        // }
-        //
-        // mercadorias = await resposta.json();
+        await buscarMercadorias();
 
-        mercadorias = [
-            {nome: "Camiseta", valor: 100},
-            {nome: "Calça Jeans", valor: 150},
-            {nome: "Tenis Esportivo", valor: 200},
-            {nome: "Camiseta", valor: 100},
-            {nome: "Calça Jeans", valor: 150},
-            {nome: "Tenis Esportivo", valor: 200},
-            {nome: "Camiseta", valor: 100},
-            {nome: "Calça Jeans", valor: 150},
-            {nome: "Tenis Esportivo", valor: 200},
-            {nome: "Camiseta", valor: 100},
-            {nome: "Calça Jeans", valor: 150},
-            {nome: "Tenis Esportivo", valor: 200},
-            {nome: "Camiseta", valor: 100},
-            {nome: "Calça Jeans", valor: 150},
-            {nome: "Tenis Esportivo", valor: 200},
-            {nome: "Camiseta", valor: 100},
-            {nome: "Calça Jeans", valor: 150},
-            {nome: "Tenis Esportivo", valor: 200},
-            {nome: "Camiseta", valor: 100},
-            {nome: "Calça Jeans", valor: 150},
-            {nome: "Tenis Esportivo", valor: 200},
-            {nome: "Camiseta", valor: 100},
-            {nome: "Calça Jeans", valor: 150},
-            {nome: "Tenis Esportivo", valor: 200},
-            {nome: "Camiseta", valor: 100},
-            {nome: "Calça Jeans", valor: 150},
-            {nome: "Tenis Esportivo", valor: 200},
-        ]
         exibirMercadorias(mercadorias);
 
     } catch (error) {
@@ -59,6 +19,21 @@ document.getElementById("filtro").addEventListener("input", (e) => {
     );
     exibirMercadorias(filtradas);
 });
+
+async function buscarMercadorias() {
+    const resposta = await fetch(`${API_URL}/merch`, {
+        method: "GET",
+        credentials: "include"
+    });
+
+    if (resposta.status !== 200) {
+        alert("Acesso não autorizado!");
+        window.location.href = "../pages/login.html";
+        return;
+    }
+
+    mercadorias = await resposta.json();
+}
 
 function exibirMercadorias(listaDeMercadorias) {
     const lista = document.getElementById("mercadorias");
@@ -92,4 +67,100 @@ function exibirMercadorias(listaDeMercadorias) {
     });
 }
 
+
+const addMerch = document.getElementById("add");
+
+addMerch.addEventListener("click", () => {
+    if (document.getElementById("overlay")) return;
+
+    const overlay = document.createElement("div");
+    overlay.id = "overlay";
+    overlay.style.position = "fixed";
+    overlay.style.width = "100vw";
+    overlay.style.height = "100vh";
+    overlay.style.background = "rgba(0, 0, 0, 0.6)";
+    overlay.style.display = "flex";
+    overlay.style.justifyContent = "center";
+    overlay.style.alignItems = "center";
+
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+    modal.style.background = "#f2f2f2";
+    modal.style.padding = "1rem";
+    modal.style.borderRadius = "1rem";
+    modal.style.boxShadow = "0 0 1rem rgba(0, 0, 0, 0.4)";
+    modal.innerHTML = `
+    <div class="add-namevalue">
+      <input id="add-nome" type="text" placeholder="Nome">
+      <div>
+          <label>R$</label>
+          <input id="add-valor" type="number" placeholder="Valor">
+      </div>
+    </div>
+    <div class="add-descricao">
+      <textarea id="add-descricao" placeholder="Descrição"></textarea>
+    </div>
+    <div class="add-butons">
+        <button id="fecharModal" class="fechar-modal">Fechar</button>
+        <button id="adicionar" class="botao-adicionar">Adicionar</button>
+    </div>
+  `;
+
+    modal.querySelector("#fecharModal").addEventListener("click", () => {
+        overlay.remove();
+    });
+
+
+    modal.querySelector("#adicionar").addEventListener("click", async () => {
+        const nome = document.getElementById("add-nome").value;
+        const valor = document.getElementById("add-valor").value;
+        const descricao = document.getElementById("add-descricao").value;
+
+        if (!nome || !valor || !descricao) {
+            alert("Por favor, preencha todos os campos.");
+            return;
+        }
+
+        const merch = {
+            nome: nome,
+            valor: parseFloat(valor),
+            descricao: descricao
+        };
+
+        try {
+            const resposta = await fetch(`${API_URL}/merch`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(merch),
+                credentials: "include"
+            });
+
+            if (resposta.status === 401) {
+                alert("Acesso não autorizado!");
+                window.location.href = "../pages/login.html";
+                return;
+            }
+
+            if (resposta.status === 200) {
+                alert("Nome de Produto inválido!");
+                return;
+            }
+
+            mercadorias.push(merch);
+
+            exibirMercadorias(mercadorias);
+
+            overlay.remove();
+
+        } catch (error) {
+            console.error(error);
+            alert("Erro ao conectar com o servidor.");
+        }
+    });
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+});
 
