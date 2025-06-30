@@ -1,1 +1,1 @@
-const API_URL = 'http://192.168.10.107:8080/api';
+const API_URL = 'https://marketcrud.euricopersonal.info';
