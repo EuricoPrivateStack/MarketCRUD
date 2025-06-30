@@ -1,1 +1,1 @@
-const API_URL = 'https://marketcrud.euricopersonal.info';
+const API_URL = 'http://localhost:3000';
