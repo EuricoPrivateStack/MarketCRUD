@@ -5,7 +5,6 @@ window.addEventListener("pageshow", async () => {
         await buscarMercadorias();
 
         exibirMercadorias(mercadorias);
-
     } catch (error) {
         console.log(error);
         alert("Ocorreu um erro ao tentar se conectar ao servidor. Tente novamente mais tarde.");
@@ -21,7 +20,7 @@ document.getElementById("filtro").addEventListener("input", (e) => {
 });
 
 async function buscarMercadorias() {
-    const resposta = await fetch(`${API_URL}/merch`, {
+    let resposta = await fetch(`${API_URL}/merch`, {
         method: "GET",
         credentials: "include"
     });
@@ -32,6 +31,15 @@ async function buscarMercadorias() {
             window.location.href = "../pages/login.html";
             return;
         }
+
+        resposta = await fetch(`${API_URL}/merch`, {
+            method: "GET",
+            credentials: "include"
+        });
+    }
+
+    if (resposta.status !== 200) {
+        throw new Error("Erro ao buscar mercadorias.");
     }
 
     mercadorias = await resposta.json();
@@ -86,7 +94,7 @@ function exibirMercadorias(listaDeMercadorias) {
                 if (!confirm("Tem certeza que deseja excluir este produto?")) return;
 
                 try {
-                    const resposta = await fetch(`${API_URL}/merch/${mercadoria._id}`, {
+                    let resposta = await fetch(`${API_URL}/merch/${mercadoria._id}`, {
                         method: "DELETE",
                         credentials: "include"
                     });
@@ -97,6 +105,11 @@ function exibirMercadorias(listaDeMercadorias) {
                             window.location.href = "../pages/login.html";
                             return;
                         }
+
+                        resposta = await fetch(`${API_URL}/merch/${mercadoria._id}`, {
+                            method: "DELETE",
+                            credentials: "include"
+                        });
                     }
 
                     if (resposta.status !== 200) {
@@ -134,7 +147,7 @@ function exibirMercadorias(listaDeMercadorias) {
                 };
 
                 try {
-                    const resposta = await fetch(`${API_URL}/merch/${mercadoria._id}`, {
+                    let resposta = await fetch(`${API_URL}/merch/${mercadoria._id}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json"
@@ -149,6 +162,15 @@ function exibirMercadorias(listaDeMercadorias) {
                             window.location.href = "../pages/login.html";
                             return;
                         }
+
+                        resposta = await fetch(`${API_URL}/merch/${mercadoria._id}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(merch),
+                            credentials: "include"
+                        });
                     }
 
                     if (resposta.status !== 200) {
@@ -266,7 +288,7 @@ addMerch.addEventListener("click", () => {
         };
 
         try {
-            const resposta = await fetch(`${API_URL}/merch`, {
+            let resposta = await fetch(`${API_URL}/merch`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -281,6 +303,15 @@ addMerch.addEventListener("click", () => {
                     window.location.href = "../pages/login.html";
                     return;
                 }
+
+                resposta = await fetch(`${API_URL}/merch`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(merch),
+                    credentials: "include"
+                });
             }
 
             if (resposta.status !== 201) {
