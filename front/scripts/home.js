@@ -66,7 +66,7 @@ function exibirMercadorias(listaDeMercadorias) {
         botaoEditar.id = "editar:" + mercadoria.nome;
 
         const iconeEditar = document.createElement("img");
-        iconeEditar.src = "../assets/more.png";
+        iconeEditar.src = "../assets/more.svg";
         iconeEditar.alt = "...";
         iconeEditar.classList.add("icone-botao");
 
@@ -234,7 +234,7 @@ function createModal(aux){
         ${aux === "Editar" ? `
             
             <button id="botao-deletar" title="Excluir" class="botao-deletar">
-                <img src="../assets/trash.png" alt="Excluir" style="width: 2rem; height: 2rem;">
+                <img src="../assets/trash.svg" alt="Excluir" style="width: 2rem; height: 2rem;">
             </button>
         ` : ""}
         
