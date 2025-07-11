@@ -1,6 +1,6 @@
 let mercadorias = [];
 
-window.addEventListener("pageshow", async () => {
+window.addEventListener("DOMContentLoaded", async () => {
     try {
         await buscarMercadorias();
 
