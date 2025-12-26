@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.8">
+  <title>Home</title>
+  <link rel="icon" sizes="32x32" href="../assets/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/styles/home.css">
+</head>
+<body>
+<header>
+  <a href="/index.html">
+    <img src="/assets/logo_branca.png" alt="Logo">
+  </a>
+  <button type="button" id="logout" class="button_logout">Logout</button>
+</header>
+
+<div class="view">
+  <div class="search_add">
+    <div class="search_container">
+      <img class="lupa" src="/assets/lupa.svg" alt="Lupa">
+      <input type="text" id="filtro" name="filtro" placeholder="Mercadoria">
+    </div>
+    <button id="add">+</button>
+  </div>
+  <div class="content-header">
+    <span class="nome">Nome</span>
+    <span class="valor">Valor</span>
+  </div>
+  <div class="table_content">
+    <ul id="mercadorias"></ul>
+  </div>
+</div>
+
+<footer>
+  <span>All Rights Reserved</span>
+  <span>Eurico Gabriel Vasconcelos Pereira</span>
+  <span>2025</span>
+  <div class="img-footer">
+    <a href="https://github.com/Eurico149">
+      <img src="../assets/github.svg" alt="Github">
+    </a>
+    <a href="https://www.linkedin.com/in/euricogvp/">
+      <img src="../assets/linkedin.svg" alt="Linkedin">
+    </a>
+    <a href="https://www.instagram.com/eurico_gabriel149/">
+      <img src="../assets/instagram.svg" alt="Instagram">
+    </a>
+  </div>
+</footer>
+
+
+<script src="/scripts/api.js"></script>
+<script src="/scripts/auth/logout.js"></script>
+<script src="/scripts/auth/refresh.js"></script>
+<script src="/scripts/home.js"></script>
+</body>
+</html>
