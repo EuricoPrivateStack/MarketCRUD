@@ -33,4 +33,3 @@ jobs:
           cd /home/$USER/MarketCRUD
           docker compose -f docker-compose.prod.yaml pull
           docker compose -f docker-compose.prod.yaml up -d --remove-orphans
-
