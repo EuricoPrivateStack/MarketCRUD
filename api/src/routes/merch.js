@@ -8,7 +8,7 @@ import redis from "../conn/connectionCache.js";
 async function getUser(_id, username){
     let user;
 
-    user = await redis.get(`user:${_id};${username}`);
+    user = await redis.get(`marketcrud:user:${_id};${username}`);
     if (user){
         user = JSON.parse(user);
         user = User.hydrate(user);
@@ -16,7 +16,7 @@ async function getUser(_id, username){
 
     if (!user){
         user = await User.findOne({_id, username});
-        if (user) redis.set(`user:${_id};${username}`, JSON.stringify(user.toObject()));
+        if (user) redis.set(`marketcrud:user:${_id};${username}`, JSON.stringify(user.toObject()));
     }
 
     return user;
@@ -25,7 +25,7 @@ async function getUser(_id, username){
 async function getMercadoria(idMerch, idUser){
     let merch;
 
-    merch = await redis.get(`merch:${idMerch};${idUser}`);
+    merch = await redis.get(`marketcrud:merch:${idMerch};${idUser}`);
     if (merch){
         merch = JSON.parse(merch);
         merch = Mercadoria.hydrate(merch);
@@ -34,7 +34,7 @@ async function getMercadoria(idMerch, idUser){
     if (!merch) {
         merch = await Mercadoria.findOne({_id: idMerch, usuario: idUser});
         if (merch)
-            redis.set(`merch:${idMerch};${idUser}`, JSON.stringify(merch.toObject()));
+            redis.set(`marketcrud:merch:${idMerch};${idUser}`, JSON.stringify(merch.toObject()));
     }
 
     return merch;
@@ -117,8 +117,8 @@ router.delete("/:id", authMiddleware, async (req, res) => {
         await mercadoria.deleteOne();
 
         try {
-            redis.del(`merch:${idMerch};${id}`);
-            redis.set(`user:${id};${username}`, JSON.stringify(user.toObject()));
+            redis.del(`marketcrud:merch:${idMerch};${id}`);
+            redis.set(`marketcrud:user:${id};${username}`, JSON.stringify(user.toObject()));
         } catch {
             console.error('error ao deletar cache de mercadoria ou usuario');
         }
@@ -152,7 +152,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 
         await mercadoria.save();
 
-        redis.set(`merch:${id};${idUser}`, JSON.stringify(mercadoria.toObject()));
+        redis.set(`marketcrud:merch:${id};${idUser}`, JSON.stringify(mercadoria.toObject()));
 
         res.status(200).json({mercadoria});
     } catch (error){

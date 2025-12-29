@@ -1,38 +1,27 @@
 services:
 
-  mongo:
-    image: mongo:7-jammy
-    restart: no
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-admin}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-admin123}
-    volumes:
-      - mongo_data:/data/db
-
-  redis:
-    image: redis:alpine
-    restart: no
-    command: redis-server --maxmemory 100mb --maxmemory-policy allkeys-lru
-
   api:
+    container_name: marketcrud-api
     build: api/.
     restart: no
     environment:
-      - MONGO_URI=${MONGO_URI:-mongodb://admin:admin123@mongo:27017/?authSource=admin}
-      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-Nc/2vCmtlXcTNqY+ipCNp0DT6Gg}
-      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET:-bKLIUw4cVhI6XyEJkhh030l3JaU}
-      - URL_FRONTEND=${URL_FRONTEND:-http://localhost:8080}
+      MONGO_URI: ${MARKETCRUD_MONGO_URI:-mongodb://admin:12345678@mongo:27017/?authSource=admin}
+      JWT_REFRESH_SECRET: ${MARKETCRUD_JWT_REFRESH_SECRET:-max_security}
+      JWT_ACCESS_SECRET: ${MARKETCRUD_JWT_ACCESS_SECRET:-max_security}
+      URL_FRONTEND: ${MARKETCRUD_URL_FRONTEND:-http://localhost:8080}
     depends_on:
       - mongo
       - redis
 
   front:
+    container_name: marketcrud-front
     build: front/.
     restart: no
     depends_on:
       - api
 
   nginx:
+    container_name: marketcrud-nginx
     image: nginx:stable
     restart: no
     ports:
@@ -42,6 +31,22 @@ services:
     depends_on:
       - front
       - api
+
+  mongo:
+    container_name: marketcrud-mongo
+    image: mongo:7.0
+    restart: no
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MARKETCRUD_MONGO_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MARKETCRUD_MONGO_PASSWORD:-12345678}
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    container_name: marketcrud-redis
+    image: redis:alpine
+    restart: no
+    command: redis-server --maxmemory 100mb --maxmemory-policy allkeys-lru
 
 volumes:
   mongo_data:

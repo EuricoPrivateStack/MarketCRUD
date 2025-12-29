@@ -1,0 +1,36 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["Build & Push Images"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync infra
+        run: |
+          rsync -av --delete infra/ /home/$USER/MarketCRUD/
+
+      - name: Deploy stack
+        env:
+          MARKETCRUD_MONGO_USERNAME: ${{ secrets.MARKETCRUD_MONGO_USERNAME }}
+          MARKETCRUD_MONGO_PASSWORD: ${{ secrets.MARKETCRUD_MONGO_PASSWORD }}
+
+          MARKETCRUD_URL_FRONTEND: ${{ vars.MARKETCRUD_URL_FRONTEND }}
+
+          MARKETCRUD_MONGO_URI: mongodb://${{ secrets.MARKETCRUD_MONGO_USERNAME }}:${{ secrets.MARKETCRUD_MONGO_PASSWORD }}@mongo:27017/?authSource=admin
+          MARKETCRUD_JWT_REFRESH_SECRET: ${{ secrets.MARKETCRUD_JWT_REFRESH_SECRET }}
+          MARKETCRUD_JWT_ACCESS_SECRET: ${{ secrets.MARKETCRUD_JWT_ACCESS_SECRET }}
+        run: |
+          cd /home/$USER/MarketCRUD
+          docker compose -f docker-compose.prod.yaml pull
+          docker compose -f docker-compose.prod.yaml up -d --remove-orphans
+
